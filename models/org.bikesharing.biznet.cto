@@ -1,1 +1,93 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+ /**
+ * Models for bikesharing business network.
+ */
+
+namespace org.bikesharing.biznet
+
+enum BikeStatus {
+    o AVAILABLE
+    o INUSE
+    o CALLBACK
+}
+
+enum Sexual {
+	o FEMALE
+	o MALE
+}
+
+// Concept of contact, for both company user and personal user.
+concept ContactInformation {
+	o String firstName
+	o String lastName
+	o String phoneNumber
+	o String email
+	o String address optional
+  	o Integer age optional
+	o Sexual sexual optional
+}
+
+// Basic Participant class, for all actual participants.
+abstract participant BaseParticipant identified by pid{
+    o String pid
+    o ContactInformation contact
+}
+
+participant BikeProvider extends BaseParticipant {
+    o String orgName
+}
+
+participant BikeUser extends BaseParticipant {
+	--> Bike[] activeBikes optional
+}
+
+// Basic Asset class, for all actual assets.
+abstract asset BaseAsset identified by aid {
+    o String aid
+}
+
+asset Bike extends BaseAsset {
+    o BikeStatus status
+    --> BikeProvider provider
+    o String remark optional
+	--> BikeUser activeUser optional
+}
+
+abstract transaction BaseTransaction {
+}
+
+abstract transaction BikeTransaction extends BaseTransaction{
+    --> Bike bike
+    --> BikeProvider provider optional
+    --> BikeUser user optional
+    o DateTime time
+}
+
+// For BikeProvider, release a bike for public.
+transaction BikeReleaseTransaction extends BikeTransaction{
+}
+
+// For BikeProvider, callback a bike for public.
+transaction BikeCallbackTransaction extends BikeTransaction{
+}
+
+// For BikeUser, rent a bike.
+transaction BikeRentTransaction extends BikeTransaction {
+}
+
+// For BikeUser, return a bike.
+transaction BikeReturnTransaction extends BikeTransaction{
+}
