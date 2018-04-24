@@ -1,6 +1,6 @@
 {
 	"name": "bikesharing-network",
-	"version": "0.0.6",
+	"version": "0.0.1",
 	"description": "A Fabric-Composer blockchain business network for bike sharing.",
 	"author": "administrator",
 	"email": "administrator@org.bikesharing.biznet",
