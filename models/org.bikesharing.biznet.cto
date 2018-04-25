@@ -71,23 +71,25 @@ abstract transaction BaseTransaction {
 
 abstract transaction BikeTransaction extends BaseTransaction{
     --> Bike bike
-    --> BikeProvider provider optional
-    --> BikeUser user optional
     o DateTime time
 }
 
 // For BikeProvider, release a bike for public.
 transaction BikeReleaseTransaction extends BikeTransaction{
+    --> BikeProvider provider
 }
 
 // For BikeProvider, callback a bike for public.
 transaction BikeCallbackTransaction extends BikeTransaction{
+    --> BikeProvider provider
 }
 
 // For BikeUser, rent a bike.
 transaction BikeRentTransaction extends BikeTransaction {
+    --> BikeUser user
 }
 
 // For BikeUser, return a bike.
 transaction BikeReturnTransaction extends BikeTransaction{
+    --> BikeUser user
 }
