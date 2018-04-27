@@ -19,25 +19,26 @@
 namespace org.bikesharing.biznet
 
 enum BikeStatus {
+    o INSTORE
     o AVAILABLE
     o INUSE
     o CALLBACK
 }
 
 enum Sexual {
-	o FEMALE
-	o MALE
+    o FEMALE
+    o MALE
 }
 
 // Concept of contact, for both company user and personal user.
 concept ContactInformation {
-	o String firstName
-	o String lastName
-	o String phoneNumber
-	o String email
-	o String address optional
-  	o Integer age optional
-	o Sexual sexual optional
+    o String firstName
+    o String lastName
+    o String phoneNumber
+    o String email
+    o String address optional
+    o Integer age optional
+    o Sexual sexual optional
 }
 
 // Basic Participant class, for all actual participants.
@@ -51,7 +52,7 @@ participant BikeProvider extends BaseParticipant {
 }
 
 participant BikeUser extends BaseParticipant {
-	--> Bike[] activeBikes optional
+    o String[] activeBikeIds optional
 }
 
 // Basic Asset class, for all actual assets.
@@ -60,10 +61,10 @@ abstract asset BaseAsset identified by aid {
 }
 
 asset Bike extends BaseAsset {
-    o BikeStatus status
+    o BikeStatus status default="INSTORE"
     --> BikeProvider provider
     o String remark optional
-	--> BikeUser activeUser optional
+    --> BikeUser activeUser optional
 }
 
 abstract transaction BaseTransaction {
