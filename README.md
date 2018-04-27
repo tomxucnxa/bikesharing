@@ -1,4 +1,6 @@
 # bikesharing
 A testing Fabric-Composer blockchain project for bike sharing business.
 
-It incudes an initial .cto file, .js file, and a package.json file. It is the easiest implementation of a bike sharing Blockchain business netowork.
+It incudes several branches of code, as steps for the series of Fabric-Composer learning notes.
+[Branch step1: the initial code of the bikesharing-network.](https://github.com/Tom-Xu-CNXA/bikesharing/tree/step1)
+[Branch step2: more complete code.](https://github.com/Tom-Xu-CNXA/bikesharing/tree/step2)
