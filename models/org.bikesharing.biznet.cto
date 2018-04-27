@@ -25,19 +25,19 @@ enum BikeStatus {
 }
 
 enum Sexual {
-	o FEMALE
-	o MALE
+    o FEMALE
+    o MALE
 }
 
 // Concept of contact, for both company user and personal user.
 concept ContactInformation {
-	o String firstName
-	o String lastName
-	o String phoneNumber
-	o String email
-	o String address optional
-  	o Integer age optional
-	o Sexual sexual optional
+    o String firstName
+    o String lastName
+    o String phoneNumber
+    o String email
+    o String address optional
+    o Integer age optional
+    o Sexual sexual optional
 }
 
 // Basic Participant class, for all actual participants.
@@ -51,7 +51,6 @@ participant BikeProvider extends BaseParticipant {
 }
 
 participant BikeUser extends BaseParticipant {
-	--> Bike[] activeBikes optional
 }
 
 // Basic Asset class, for all actual assets.
@@ -63,7 +62,7 @@ asset Bike extends BaseAsset {
     o BikeStatus status
     --> BikeProvider provider
     o String remark optional
-	--> BikeUser activeUser optional
+    --> BikeUser activeUser optional
 }
 
 abstract transaction BaseTransaction {
