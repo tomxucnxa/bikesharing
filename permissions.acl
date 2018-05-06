@@ -1,0 +1,143 @@
+/**
+ * New access control file
+ */
+rule NetworkAdminUser {
+    description: "Grant administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+rule BusinessAdmin {    
+    description: "Grant administrators full access to the bikesharing business network"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.bikesharing.biznet.**"
+    action: ALLOW
+}
+
+rule NormalACL {
+    description:  "Normal ACL to permit base access"
+    participant: "org.hyperledger.composer.system.Participant"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+rule BikeProviderSelf {    
+    description: "Grant participant access to self"
+    participant(bp): "org.bikesharing.biznet.BikeProvider"
+    operation: READ, UPDATE
+    resource(bpoper): "org.bikesharing.biznet.BikeProvider"
+    condition: (bp.getIdentifier() == bpoper.getIdentifier())
+    action: ALLOW
+}
+
+rule BikeUserSelf {    
+    description: "Grant participant access to self"
+    participant(bu): "org.bikesharing.biznet.BikeUser"
+    operation: READ, UPDATE
+    resource(buoper): "org.bikesharing.biznet.BikeUser"
+    condition: (bu.getIdentifier() == buoper.getIdentifier())
+    action: ALLOW
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+rule ProviderToBike {    
+    description: "Grant bike provider access to the bikes owned"
+    participant(bp): "org.bikesharing.biznet.BikeProvider"
+    operation: ALL
+    resource(b): "org.bikesharing.biznet.Bike"
+    condition: (b.provider.getIdentifier() == bp.getIdentifier())
+    action: ALLOW
+}
+
+rule ProviderCallbackCreate {    
+    description: "Grant bike provider callback access to the bikes owned"
+    participant: "org.bikesharing.biznet.BikeProvider"
+    operation: CREATE
+    resource: "org.bikesharing.biznet.BikeCallbackTransaction"
+    action: ALLOW
+}
+
+rule ProviderReleaseCreate {   
+    description: "Grant bike provider release access to the bikes owned"
+    participant: "org.bikesharing.biznet.BikeProvider"
+    operation: CREATE
+    resource: "org.bikesharing.biznet.BikeReleaseTransaction"
+    action: ALLOW
+}
+
+rule UserRentCreate {    
+    description: "Grant bike user rent access to the bikes"
+    participant: "org.bikesharing.biznet.BikeUser"
+    operation: CREATE
+    resource: "org.bikesharing.biznet.BikeRentTransaction"
+    action: ALLOW
+}
+
+rule UserReturnCreate {   
+    description: "Grant bike user return access to the bike"
+    participant: "org.bikesharing.biznet.BikeUser"
+    operation: CREATE
+    resource: "org.bikesharing.biznet.BikeReturnTransaction"
+    action: ALLOW
+}
+
+rule UserToBike {    
+    description: "Grant bike user access to the bikes"
+    participant(bu): "org.bikesharing.biznet.BikeUser"
+    operation: READ
+    resource(b): "org.bikesharing.biznet.Bike"
+    condition: (b.status == "AVAILABLE" || b.activeUser.pid == bu.pid)
+    action: ALLOW
+}
+
+rule UserToBikeRent {    
+    description: "Grant bike user access to the bikes rent"
+    participant: "org.bikesharing.biznet.BikeUser"
+    operation: READ, UPDATE
+    resource: "org.bikesharing.biznet.Bike"
+    transaction: "org.bikesharing.biznet.BikeRentTransaction"
+    action: ALLOW
+}
+
+rule UserToBikeReturn {    
+    description: "Grant bike user access to the bike"
+    participant: "org.bikesharing.biznet.BikeUser"
+    operation: READ, UPDATE
+    resource: "org.bikesharing.biznet.Bike"
+    transaction: "org.bikesharing.biznet.BikeReturnTransaction"
+    action: ALLOW
+}
+
+rule UserToUserRent {    
+    description: "Grant bike user access to the user self"
+    participant: "org.bikesharing.biznet.BikeUser"
+    operation: READ, UPDATE
+    resource: "org.bikesharing.biznet.BikeUser"
+    transaction: "org.bikesharing.biznet.BikeRentTransaction"
+    action: ALLOW
+}
+
+
+rule UserToUserReturn {    
+    description: "Grant bike user access to the user self"
+    participant: "org.bikesharing.biznet.BikeUser"
+    operation: READ, UPDATE
+    resource: "org.bikesharing.biznet.BikeUser"
+    transaction: "org.bikesharing.biznet.BikeReturnTransaction"
+    action: ALLOW
+}
